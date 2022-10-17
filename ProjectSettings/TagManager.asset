@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - CanBePickedUp
+  - Ladder
+  - Catapult
+  - Damage
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Ladder
+  - Blocking
+  - Consumables
+  - Enemies
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 656815707
+    locked: 0
+  - name: Objects
+    uniqueID: 2970512505
+    locked: 0
+  - name: Ladder
+    uniqueID: 517703233
+    locked: 0
+  - name: Characters
+    uniqueID: 3645984845
+    locked: 0
+  - name: UI
+    uniqueID: 2154936815
+    locked: 0
