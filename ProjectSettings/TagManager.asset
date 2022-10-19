@@ -9,6 +9,7 @@ TagManager:
   - Ladder
   - Catapult
   - Damage
+  - VirtualCamera
   layers:
   - Default
   - TransparentFX

@@ -25,7 +25,7 @@ public class MovementController : MonoBehaviour
     private bool isTouchingGround;
     // Start is called before the first frame update
     //3
-    
+    public Player player;
     Rigidbody2D rb2D;
     Vector2 movement = new Vector2();
 
@@ -39,6 +39,8 @@ public class MovementController : MonoBehaviour
         idleLeft = 6,
         climbingUp = 7,
         death = 8,
+        attackRight = 9,
+        attackLeft = 10,
     }
     private void Start()
     {
@@ -95,6 +97,14 @@ public class MovementController : MonoBehaviour
             rb2D.velocity = new Vector2(rb2D.velocity.x, jumpforce);
 
         }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            player.isAttacking = true;
+        }
+        else
+        {
+            player.isAttacking = false;
+        }
         if (isClimbing)
         {
             rb2D.gravityScale = 0f;
@@ -111,25 +121,25 @@ public class MovementController : MonoBehaviour
     private void UpdateState()
     {
         // 8
-        if (direction > 0f && isTouchingGround)
+        if (direction > 0f && isTouchingGround && player.isAttacking == false)
         {
             animator.SetInteger(animationState, (int)CharStates.walkRight);
             facingLeft = false;
         }
-        else if (direction < 0f && isTouchingGround)
+        else if (direction < 0f && isTouchingGround && player.isAttacking == false)
         {
             animator.SetInteger(animationState, (int)CharStates.walkLeft);
             facingLeft = true;
         }
-        else if (!isTouchingGround && facingLeft == false && !isClimbing)
+        else if (!isTouchingGround && facingLeft == false && !isClimbing && player.isAttacking == false)
         {
             animator.SetInteger(animationState, (int)CharStates.jumpRight);
         }
-        else if (!isTouchingGround && facingLeft == true && !isClimbing)
+        else if (!isTouchingGround && facingLeft == true && !isClimbing && player.isAttacking == false)
         {
             animator.SetInteger(animationState, (int)CharStates.jumpLeft);
         }
-        else if (facingLeft == true)
+        else if (facingLeft == true && player.isAttacking == false)
         {
             animator.SetInteger(animationState, (int)CharStates.idleLeft);
         }
@@ -140,6 +150,14 @@ public class MovementController : MonoBehaviour
         else if (isDead == true)
         {
             animator.SetInteger(animationState, (int)CharStates.death);
+        }
+        else if (player.isAttacking == true && facingLeft == false)
+        {
+            animator.SetInteger(animationState, (int)CharStates.attackRight);
+        }
+        else if (player.isAttacking == true && facingLeft == true)
+        {
+            animator.SetInteger(animationState, (int)CharStates.attackLeft);
         }
         else
         {
