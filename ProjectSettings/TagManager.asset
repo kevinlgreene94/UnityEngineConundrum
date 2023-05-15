@@ -10,6 +10,8 @@ TagManager:
   - Catapult
   - Damage
   - VirtualCamera
+  - EnemyWall
+  - HealthBar
   layers:
   - Default
   - TransparentFX
@@ -22,7 +24,7 @@ TagManager:
   - Blocking
   - Consumables
   - Enemies
-  - 
+  - Ammo
   - 
   - 
   - 
