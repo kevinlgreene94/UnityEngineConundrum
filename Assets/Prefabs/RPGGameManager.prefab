@@ -45,3 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpawnPoint: {fileID: 0}
+  cameraManager: {fileID: 0}
+  healthBar: {fileID: 408452044577930345, guid: 72a69da090be02f47b506b281173cec7, type: 3}
+  playerObject: {fileID: 9174901259764848740, guid: 01f6e56deb77adf4c83f9397ddfa0358, type: 3}

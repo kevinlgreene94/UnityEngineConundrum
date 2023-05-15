@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 3950345514369859878}
   - component: {fileID: -1711392658005902506}
   - component: {fileID: 4793062699776784879}
+  - component: {fileID: 5564047362332834393}
+  - component: {fileID: 5300192981934523499}
   m_Layer: 10
   m_Name: EnemySkeleton
   m_TagString: Enemy
@@ -105,7 +107,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.625, y: 1}
+    oldSize: {x: 0.5625, y: 1}
     newSize: {x: 0.53125, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -150,6 +152,7 @@ MonoBehaviour:
   maxHitPoints: 1
   characterCategory: 1
   damageStrength: 1
+  attackable: 0
 --- !u!50 &4793062699776784879
 Rigidbody2D:
   serializedVersion: 4
@@ -171,3 +174,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!58 &5564047362332834393
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2270969756980939826}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1
+--- !u!114 &5300192981934523499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2270969756980939826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14c5366d110f8b45ad99e5bed96ab31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pursuitSpeed: 1.4
+  wanderSpeed: 0.8
+  directionChangeInterval: 4
+  followPlayer: 1
+  rangeOne: 0
+  rangeTwo: 0

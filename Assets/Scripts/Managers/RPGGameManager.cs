@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RPGGameManager : MonoBehaviour
 {
     public SpawnPoint playerSpawnPoint;
     public static RPGGameManager sharedInstance = null;
     public RPGCameraManager cameraManager;
+    GameObject player;
+    public HealthBar healthBar;
+    public Player playerObject;
 
     void Awake()
     {
@@ -26,24 +30,33 @@ public class RPGGameManager : MonoBehaviour
     {
         // Consolidate all the logic to setup a scene inside a single method. 
         // This makes it easier to call again in the future, in places other than the Start() method.
-        SetupScene();
+        
+
     }
     void Update()
     {
-
+        if(player == null)
+        {
+            SpawnPlayer();
+            
+        }
+        
     }
 
-    public void SetupScene()
-    {
-        SpawnPlayer();
-    }
+   
 
     public void SpawnPlayer()
     {
-        if (playerSpawnPoint != null)
+        if (playerSpawnPoint != null && healthBar.playerLives > 0)
         {
-            GameObject player = playerSpawnPoint.SpawnObject();
+            player = playerSpawnPoint.SpawnObject();
             cameraManager.virtualCamera.Follow = player.transform;
+        }
+        if(healthBar.playerLives == 0)
+        {
+            SceneManager.LoadScene("GameOver");
+            healthBar.playerLives = 5;
+            playerObject.isDead = true;
         }
     }
     

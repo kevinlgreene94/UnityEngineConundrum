@@ -10,8 +10,16 @@ public class Player : Character
     public Inventory inventoryPrefab;
     Inventory inventory;
     public bool isAttacking = false;
+    public bool isBlocking = false;
+    public bool isShooting = false;
+    public bool facingLeft = false;
+    public bool isDead = false;
+    public bool isTouchingGround;
+    public Transform groundCheck;
+    public float groundCheckRadius;
+    public LayerMask groundLayer;
     public int damageStrength;
-    public int playerLives;
+    
     Coroutine damageCoroutine;
 
     private void OnEnable()
@@ -32,7 +40,9 @@ public class Player : Character
         base.KillCharacter();
         Destroy(healthBar.gameObject);
         Destroy(inventory.gameObject);
-        
+        healthBarPrefab.playerLives -= 1;
+
+
     }
     public override IEnumerator DamageCharacter(int damage, float interval)
     {
@@ -42,7 +52,8 @@ public class Player : Character
 
             if (hitPoints.value <= float.Epsilon)
             {
-                KillCharacter();
+                isDead = true;
+                StartCoroutine(PlayerDeath());
                 break;
             }
 
@@ -56,26 +67,51 @@ public class Player : Character
             }
         }
     }
+    public IEnumerator PlayerDeath()
+    {
+        while(isDead == true)
+        {
+            yield return new WaitForSeconds(1);
+            KillCharacter();
+        }
+    }
+    public IEnumerator PlayerAttacking()
+    {
+        while (isAttacking == true)
+        {
+            yield return new WaitForSeconds(1.35f);
+            isAttacking = false;
+            break;
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             isAttacking = true;
+            StartCoroutine(PlayerAttacking());
 
+        }
+        if (Input.GetKey(KeyCode.E))
+        {
+            isBlocking = true;
         }
         else
         {
-           isAttacking = false;
+            isBlocking = false;
         }
+        
 
+        isTouchingGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Damage"))
         {
-            KillCharacter();
+            isDead = true;
+            StartCoroutine(PlayerDeath());
         }
     }
     void OnTriggerEnter2D(Collider2D collision)
@@ -94,6 +130,9 @@ public class Player : Character
                     case Item.ItemType.HEALTH:
                         shouldDisappear = AdjustHitPoints(hitObject.quantity);
                         break;
+                    case Item.ItemType.LIFE:
+                        shouldDisappear = AdjustLives(hitObject.quantity);
+                        break;
                     default:
                         break;
                 }
@@ -109,6 +148,15 @@ public class Player : Character
 
     }
     public bool AdjustHitPoints(int amount)
+    {
+        if (hitPoints.value < maxHitPoints)
+        {
+            healthBarPrefab.playerLives = healthBarPrefab.playerLives + amount;
+            return true;
+        }
+        return false;
+    }
+    public bool AdjustLives(int amount)
     {
         if (hitPoints.value < maxHitPoints)
         {

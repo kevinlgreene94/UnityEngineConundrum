@@ -10,19 +10,16 @@ public class MovementController : MonoBehaviour
     public float jumpforce = 8f;
     public float climbSpeed = 8f;
     private float direction = 0f;
-    private bool facingLeft = false;
+    //private bool facingLeft = false;
     private float vertical;
     private float speed = 8f;
     private bool isLadder;
     private bool isClimbing;
-    private bool isDead = false;
     Animator animator;
     string animationState = "AnimationState";
     //2
-    public Transform groundCheck;
-    public float groundCheckRadius;
-    public LayerMask groundLayer;
-    private bool isTouchingGround;
+    public AudioSource audioSource;
+    public AudioClip[] audioClipArray;
     // Start is called before the first frame update
     //3
     public Player player;
@@ -41,24 +38,35 @@ public class MovementController : MonoBehaviour
         death = 8,
         attackRight = 9,
         attackLeft = 10,
+        shootRight = 11,
+        shootLeft = 12,
+        blockRight = 13,
+        blockLeft = 14,
     }
     private void Start()
     {
         //4
         animator = GetComponent<Animator>();
         rb2D = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
      private void Update()
     {
         UpdateState();
+        UpdateAudio();
         vertical = Input.GetAxis("Vertical");
-        if (isLadder && Mathf.Abs(vertical) > 0f)
+        if (isLadder && Input.GetKey(KeyCode.W))
         {
             isClimbing = true;
         }
+        else
+        {
+            isClimbing = false;
+        }
         
+
     }
 
     //5
@@ -69,43 +77,32 @@ public class MovementController : MonoBehaviour
     
     private void MoveCharacter()
     {
-        isTouchingGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        
         direction = Input.GetAxis("Horizontal");
         
 
-        if (direction > 0f)
+        if (direction > 0f && player.isAttacking == false && player.isShooting == false && player.isDead == false)
         {
             rb2D.velocity = new Vector2(direction * movementSpeed, rb2D.velocity.y);
 
         }
-        else if (direction < 0f)
+        else if (direction < 0f && player.isAttacking == false && player.isShooting == false && player.isDead == false)
         {
             rb2D.velocity = new Vector2(direction * movementSpeed, rb2D.velocity.y);
 
-        }
-        else if (isDead == true)
-        {
-            direction = 0;
         }
         else
         {
             rb2D.velocity = new Vector2(0, rb2D.velocity.y);
         }
 
-        if (Input.GetKey(KeyCode.UpArrow) && isTouchingGround)
+        if (Input.GetKey(KeyCode.W) && player.isTouchingGround && player.isAttacking == false)
         {
             rb2D.velocity = new Vector2(rb2D.velocity.x, jumpforce);
 
         }
-        if (Input.GetKey(KeyCode.Space))
-        {
-            player.isAttacking = true;
-        }
-        else
-        {
-            player.isAttacking = false;
-        }
-        if (isClimbing)
+        
+        if (isClimbing && player.isDead == false)
         {
             rb2D.gravityScale = 0f;
             rb2D.velocity = new Vector2(rb2D.velocity.x, vertical * speed);
@@ -115,53 +112,83 @@ public class MovementController : MonoBehaviour
             rb2D.gravityScale = 7;
         }
         
+        
             movement.Normalize();
     }
     
     private void UpdateState()
     {
         // 8
-        if (direction > 0f && isTouchingGround && player.isAttacking == false)
+        if (direction > 0f && player.isTouchingGround && player.isAttacking == false && player.isShooting == false && player.isDead == false)
         {
             animator.SetInteger(animationState, (int)CharStates.walkRight);
-            facingLeft = false;
+            player.facingLeft = false;
         }
-        else if (direction < 0f && isTouchingGround && player.isAttacking == false)
+        else if (direction < 0f && player.isTouchingGround && player.isAttacking == false && player.isShooting == false && player.isDead == false)
         {
             animator.SetInteger(animationState, (int)CharStates.walkLeft);
-            facingLeft = true;
+            player.facingLeft = true;
         }
-        else if (!isTouchingGround && facingLeft == false && !isClimbing && player.isAttacking == false)
+        else if (!player.isTouchingGround && player.facingLeft == false && !isClimbing && player.isAttacking == false && player.isShooting == false && player.isDead == false)
         {
             animator.SetInteger(animationState, (int)CharStates.jumpRight);
         }
-        else if (!isTouchingGround && facingLeft == true && !isClimbing && player.isAttacking == false)
+        else if (!player.isTouchingGround && player.facingLeft == true && !isClimbing && player.isAttacking == false && player.isShooting == false && player.isDead == false)
         {
             animator.SetInteger(animationState, (int)CharStates.jumpLeft);
         }
-        else if (facingLeft == true && player.isAttacking == false)
+        else if (player.facingLeft == true && player.isAttacking == false && player.isShooting == false && player.isDead == false)
         {
             animator.SetInteger(animationState, (int)CharStates.idleLeft);
         }
-        else if (isClimbing)
+        else if (isClimbing && player.isDead == false)
         {
             animator.SetInteger(animationState, (int)CharStates.climbingUp);
         }
-        else if (isDead == true)
-        {
-            animator.SetInteger(animationState, (int)CharStates.death);
-        }
-        else if (player.isAttacking == true && facingLeft == false)
+        else if (player.isAttacking == true && player.facingLeft == false && player.isShooting == false && player.isDead == false)
         {
             animator.SetInteger(animationState, (int)CharStates.attackRight);
         }
-        else if (player.isAttacking == true && facingLeft == true)
+        else if (player.isAttacking == true && player.facingLeft == true && player.isShooting == false && player.isDead == false)
         {
             animator.SetInteger(animationState, (int)CharStates.attackLeft);
+        }
+        else if (player.isShooting == true && player.facingLeft == true && player.isDead == false)
+        {
+            animator.SetInteger(animationState, (int)CharStates.shootLeft);
+            
+        }
+        else if (player.isShooting == true && player.facingLeft == false && player.isDead == false)
+        {
+            animator.SetInteger(animationState, (int)CharStates.shootRight);
+            
+        }
+        else if ( player.isDead == true)
+        {
+            animator.SetInteger(animationState, (int)CharStates.death);
+        }
+        else if (player.isBlocking)
+        {
+            animator.SetInteger(animationState, (int)CharStates.blockRight);
         }
         else
         {
             animator.SetInteger(animationState, (int)CharStates.idleRight);
+        }
+    }
+    private void UpdateAudio()
+    {
+        if (Input.GetMouseButtonDown(0) && player.isTouchingGround)
+        {
+            audioSource.PlayOneShot(audioClipArray[0]);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            audioSource.PlayOneShot(audioClipArray[1]);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            audioSource.PlayOneShot(audioClipArray[2]);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -169,10 +196,6 @@ public class MovementController : MonoBehaviour
         if (collision.CompareTag("Ladder"))
         {
             isLadder = true;
-        }
-        if (collision.CompareTag("Damage"))
-        {
-            isDead = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

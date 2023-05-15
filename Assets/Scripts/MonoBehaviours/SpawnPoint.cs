@@ -29,13 +29,13 @@ public class SpawnPoint : MonoBehaviour
     {
 
     }
-    public void SpawnPlayer()
+    /*public void SpawnPlayer()
     {
         if (playerSpawnPoint != null)
         {
             GameObject player = playerSpawnPoint.SpawnObject();
         }
         
-    }
+    }*/
 
 }

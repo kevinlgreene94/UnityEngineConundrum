@@ -7,11 +7,11 @@ public class HealthBar : MonoBehaviour
 
     [HideInInspector]
     public Character character;
-
-    public Image meterImage;
-
     
-
+    public Image meterImage;
+    public Text livesText;
+    public Player player;
+    public int playerLives = 5;
     float maxHitPoints;
 
     void Start()
@@ -19,7 +19,8 @@ public class HealthBar : MonoBehaviour
         if(character != null)
         {
             maxHitPoints = character.maxHitPoints;
-        }   
+        }
+        
     }
 
     void Update()
@@ -27,7 +28,7 @@ public class HealthBar : MonoBehaviour
         if (character != null)
         {
             meterImage.fillAmount = hitPoints.value / maxHitPoints;
-            
+            livesText.text = "Lives: " + playerLives;
         }
     }
 }

@@ -38,6 +38,10 @@ public class Enemy : Character
                 damageCoroutine = StartCoroutine(player.DamageCharacter(damageStrength, 1.0f));
             }
         }
+        if (collision.gameObject.CompareTag("Damage"))
+        {
+            KillCharacter();
+        }
     }
     void OnCollisionExit2D(Collision2D collision)
     {

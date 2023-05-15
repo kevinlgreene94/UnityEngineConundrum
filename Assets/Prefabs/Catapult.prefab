@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 1325581846862940079}
   - component: {fileID: 1325581846862940072}
   - component: {fileID: 1325581846862940073}
-  - component: {fileID: 5968086208268205415}
-  m_Layer: 0
+  - component: {fileID: -3768282685964282013}
+  - component: {fileID: 5129304909246399982}
+  m_Layer: 8
   m_Name: Catapult
   m_TagString: Catapult
   m_Icon: {fileID: 0}
@@ -72,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1324454791
-  m_SortingLayer: 2
+  m_SortingLayerID: -648982451
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -1080013893, guid: e69ba25f400d9e048b8b6a88b6c6e54a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -106,16 +107,44 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!65 &5968086208268205415
-BoxCollider:
+--- !u!114 &-3768282685964282013
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1325581846862940074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836b85495b6e9ef458d96917b9030a0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoPrefab: {fileID: 659011606661926301, guid: 437430921e70e1546a4710a3dbba85db, type: 3}
+  poolSize: 2
+  weaponVelocity: 0.3
+--- !u!61 &5129304909246399982
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325581846862940074}
+  m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -1.3752617, y: 1.0743482}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.6366549, y: 0.29895237}
+    oldSize: {x: 9.96875, y: 5.34375}
+    newSize: {x: 9.96875, y: 5.34375}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.309507, y: 5.34375, z: 0.20000002}
-  m_Center: {x: -6.4241843, y: 1.0743482, z: 0}
+  m_Size: {x: 9.942782, y: 5.34375}
+  m_EdgeRadius: 0
